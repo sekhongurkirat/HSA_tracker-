@@ -72,7 +72,11 @@ class Extractor:
             ],
         )
 
-        raw = response.content[0].text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+        import re
+        raw = response.content[0].text.strip()
+        raw = re.sub(r"^```[a-z]*\s*", "", raw)
+        raw = re.sub(r"\s*```$", "", raw)
+        raw = raw.strip()
         logger.debug(f"Extractor raw response: {raw}")
 
         try:
