@@ -72,7 +72,7 @@ class Extractor:
             ],
         )
 
-        raw = response.content[0].text.strip()
+        raw = response.content[0].text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         logger.debug(f"Extractor raw response: {raw}")
 
         try:

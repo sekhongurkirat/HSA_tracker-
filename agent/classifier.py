@@ -66,7 +66,7 @@ class Classifier:
             ],
         )
 
-        raw = response.content[0].text.strip()
+        raw = response.content[0].text.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         logger.debug(f"Classifier raw response: {raw}")
 
         try:
