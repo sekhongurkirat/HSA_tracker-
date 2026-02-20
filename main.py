@@ -26,7 +26,7 @@ from utils.logger import get_logger, setup_logging
 def main() -> None:
     # ── 1. Load config from .env ─────────────────────────────────────────────
     settings = load_settings()
-    setup_logging(level=settings.log_level, log_file=settings.log_file or None)
+    setup_logging(log_level=settings.log_level, log_file=settings.log_file or "")
     logger = get_logger(__name__)
     logger.info("HSA Tracker starting…")
 
@@ -71,10 +71,10 @@ def main() -> None:
     monitors = []
     for account in settings.imap_accounts:
         if settings.monitor_mode == "idle":
-            monitor = IMAPMonitor(account)
+            monitor = IMAPMonitor(**account)
         else:
             monitor = PollingMonitor(
-                account,
+                **account,
                 interval_minutes=settings.poll_interval_minutes,
             )
 

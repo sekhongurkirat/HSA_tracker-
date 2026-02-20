@@ -10,16 +10,7 @@ def get_logger(name: str) -> logging.Logger:
         logger = get_logger(__name__)
         logger.info("Something happened")
     """
-    logger = logging.getLogger(name)
-    if not logger.handlers:
-        handler = logging.StreamHandler(sys.stdout)
-        formatter = logging.Formatter(
-            fmt="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-    return logger
+    return logging.getLogger(name)
 
 
 def setup_logging(log_level: str = "INFO", log_file: str = "") -> None:

@@ -83,11 +83,13 @@ class IMAPMonitor(BaseMonitor):
                 logger.debug("IDLE timeout — refreshing connection")
 
     def _fetch_unseen(self, on_message: Callable[[EmailMessage], None]) -> None:
-        """Fetch all UNSEEN messages and pass each to on_message."""
-        uids = self._client.search(["UNSEEN"])
+        """Fetch UNSEEN messages received today or later only."""
+        from datetime import date
+        today = date.today().strftime("%d-%b-%Y")   # e.g. "20-Feb-2026"
+        uids = self._client.search(["UNSEEN", "SINCE", today])
         if not uids:
             return
-        logger.info(f"Found {len(uids)} unseen message(s)")
+        logger.info(f"Found {len(uids)} unseen message(s) since {today}")
         for uid, data in self._client.fetch(uids, ["RFC822"]).items():
             raw = data.get(b"RFC822")
             if not raw:

@@ -58,11 +58,13 @@ class PollingMonitor(BaseMonitor):
         with IMAPClient(self.host, port=self.port, ssl=True, ssl_context=context) as client:
             client.login(self.username, self.password)
             client.select_folder(self.mailbox)
-            uids = client.search(["UNSEEN"])
+            from datetime import date
+            today = date.today().strftime("%d-%b-%Y")
+            uids = client.search(["UNSEEN", "SINCE", today])
             if not uids:
                 logger.debug("No new messages")
                 return
-            logger.info(f"Found {len(uids)} new message(s)")
+            logger.info(f"Found {len(uids)} new message(s) since {today}")
             for uid, data in client.fetch(uids, ["RFC822"]).items():
                 raw = data.get(b"RFC822")
                 if not raw:
