@@ -34,7 +34,7 @@ class SheetsClient:
 
         self.service.spreadsheets().values().append(
             spreadsheetId=self.spreadsheet_id,
-            range=f"{self.sheet_name}!A:D",
+            range=f"'{self.sheet_name}'!A:D",
             valueInputOption="USER_ENTERED",
             insertDataOption="INSERT_ROWS",
             body={"values": values},
